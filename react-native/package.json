@@ -1,0 +1,25 @@
+{
+    "name": "@ai-appforge/react-native",
+    "version": "1.0.0",
+    "description": "React Native SDK for AI App Forge",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "npx tsc",
+        "test": "jest"
+    },
+    "dependencies": {
+        "@ai-appforge/core": "file:../core"
+    },
+    "peerDependencies": {
+        "react-native": "*"
+    },
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^25.0.10",
+        "@types/react-native": "^0.72.0",
+        "jest": "^30.2.0",
+        "ts-jest": "^29.4.6",
+        "typescript": "^5.0.0"
+    }
+}

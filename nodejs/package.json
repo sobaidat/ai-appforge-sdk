@@ -1,0 +1,26 @@
+{
+    "name": "@ai-appforge/nodejs",
+    "version": "1.0.0",
+    "description": "Node.js SDK for AI App Forge",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "scripts": {
+        "build": "npx tsc",
+        "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest"
+    },
+    "dependencies": {
+        "@ai-appforge/core": "file:../core",
+        "dotenv": "^16.3.1",
+        "node-fetch": "^3.3.2"
+    },
+    "devDependencies": {
+        "@types/jest": "^30.0.0",
+        "@types/node": "^20.19.30",
+        "@types/node-fetch": "^2.6.4",
+        "cross-env": "^10.1.0",
+        "jest": "^30.2.0",
+        "ts-jest": "^29.4.6",
+        "typescript": "^5.0.0"
+    },
+    "type": "module"
+}
