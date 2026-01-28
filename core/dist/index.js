@@ -17,3 +17,4 @@ Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./types"), exports);
 __exportStar(require("./workflows"), exports);
 __exportStar(require("./activity"), exports);
+__exportStar(require("./socket"), exports);

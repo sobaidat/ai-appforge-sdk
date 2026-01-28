@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { WorkflowsModule, APIError, ActivityModule } from '@ai-appforge/core';
+import { WorkflowsModule, APIError, ActivityModule, AiAppForgeSocket } from '@ai-appforge/core';
 import * as dotenv from 'dotenv';
 // Load environment variables
 dotenv.config();
@@ -11,8 +11,16 @@ export class AiAppForgeClient {
         this.apiKey = options?.apiKey || process.env.AI_APP_FORGE_API_KEY || '';
         this.authToken = options?.authToken;
         // Initialize modules
-        this.workflows = new WorkflowsModule(this.request.bind(this));
+        this.socket = new AiAppForgeSocket();
+        this.workflows = new WorkflowsModule(this.request.bind(this), this.socket);
         this.activity = new ActivityModule(this.request.bind(this));
+    }
+    /**
+     * Connects the WebSocket client using the SDK's configuration.
+     */
+    connectSocket() {
+        const auth = this.apiKey || this.authToken || '';
+        this.socket.connect(this.baseUrl, auth);
     }
     async request(endpoint, options) {
         const headers = {

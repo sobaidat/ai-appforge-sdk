@@ -1,4 +1,4 @@
-import { WorkflowsModule, APIError, ActivityModule } from '@ai-appforge/core';
+import { WorkflowsModule, APIError, ActivityModule, AiAppForgeSocket } from '@ai-appforge/core';
 
 export class AiAppForgeClient {
     private baseUrl: string;
@@ -6,7 +6,9 @@ export class AiAppForgeClient {
     private authToken?: string;
 
     public workflows: WorkflowsModule;
+
     public activity: ActivityModule;
+    public socket: AiAppForgeSocket;
 
     constructor(options?: { apiKey?: string; baseUrl?: string; authToken?: string }) {
         this.baseUrl = options?.baseUrl || process.env.AI_APP_FORGE_BASE_URL || 'http://localhost:3001';
@@ -17,8 +19,17 @@ export class AiAppForgeClient {
         this.authToken = options?.authToken;
 
         // Initialize modules
-        this.workflows = new WorkflowsModule(this.request.bind(this));
+        this.socket = new AiAppForgeSocket();
+        this.workflows = new WorkflowsModule(this.request.bind(this), this.socket);
         this.activity = new ActivityModule(this.request.bind(this));
+    }
+
+    /**
+     * Connects the WebSocket client using the SDK's configuration.
+     */
+    public connectSocket(): void {
+        const auth = this.apiKey || this.authToken || '';
+        this.socket.connect(this.baseUrl, auth);
     }
 
 

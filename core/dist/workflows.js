@@ -2,8 +2,33 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkflowsModule = void 0;
 class WorkflowsModule {
-    constructor(request) {
+    constructor(request, socket) {
         this.request = request;
+        this.socket = socket;
+    }
+    /**
+     * Subscribe to workflow logs.
+     */
+    onLog(callback) {
+        if (!this.socket)
+            throw new Error('Socket not initialized');
+        return this.socket.onWorkflowLog(callback);
+    }
+    /**
+     * Subscribe to node execution results.
+     */
+    onNodeExecutionResult(callback) {
+        if (!this.socket)
+            throw new Error('Socket not initialized');
+        return this.socket.onNodeExecutionResult(callback);
+    }
+    /**
+     * Join a workflow room to receive real-time updates.
+     */
+    join(workflowId) {
+        if (!this.socket)
+            throw new Error('Socket not initialized');
+        this.socket.joinWorkflow(workflowId);
     }
     /**
      * List all workflows for a user.

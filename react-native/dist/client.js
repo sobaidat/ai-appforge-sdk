@@ -10,8 +10,16 @@ class AiAppForgeClient {
         this.apiKey = options?.apiKey || process.env.AI_APP_FORGE_API_KEY || '';
         this.authToken = options?.authToken;
         // Initialize modules
-        this.workflows = new core_1.WorkflowsModule(this.request.bind(this));
+        this.socket = new core_1.AiAppForgeSocket();
+        this.workflows = new core_1.WorkflowsModule(this.request.bind(this), this.socket);
         this.activity = new core_1.ActivityModule(this.request.bind(this));
+    }
+    /**
+     * Connects the WebSocket client using the SDK's configuration.
+     */
+    connectSocket() {
+        const auth = this.apiKey || this.authToken || '';
+        this.socket.connect(this.baseUrl, auth);
     }
     async request(endpoint, options) {
         const headers = {

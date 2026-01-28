@@ -13,10 +13,38 @@ import {
     RespondToInputData,
     RespondToInputResponse,
     DeleteWorkflowResponse
-} from './types'; // Removed .js extension for TS resolution
+} from './types';
+import { AiAppForgeSocket, WorkflowLog, NodeExecutionResult, EdgeStatus, NodeStatus } from './socket';
 
 export class WorkflowsModule {
-    constructor(private request: <T>(endpoint: string, options?: any) => Promise<T>) { }
+    constructor(
+        private request: <T>(endpoint: string, options?: any) => Promise<T>,
+        private socket?: AiAppForgeSocket
+    ) { }
+
+    /**
+     * Subscribe to workflow logs.
+     */
+    onLog(callback: (log: WorkflowLog) => void) {
+        if (!this.socket) throw new Error('Socket not initialized');
+        return this.socket.onWorkflowLog(callback);
+    }
+
+    /**
+     * Subscribe to node execution results.
+     */
+    onNodeExecutionResult(callback: (result: NodeExecutionResult) => void) {
+        if (!this.socket) throw new Error('Socket not initialized');
+        return this.socket.onNodeExecutionResult(callback);
+    }
+
+    /**
+     * Join a workflow room to receive real-time updates.
+     */
+    join(workflowId: string) {
+        if (!this.socket) throw new Error('Socket not initialized');
+        this.socket.joinWorkflow(workflowId);
+    }
 
     /**
      * List all workflows for a user.

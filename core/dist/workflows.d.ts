@@ -1,7 +1,21 @@
 import { Workflow, ListWorkflowsResponse, RunWorkflowInput, RunWorkflowResponse, StopWorkflowResponse, SaveWorkflowInput, SaveWorkflowResponse, ListReusableWorkflowsResponse, ListSchedulesResponse, CancelScheduleResponse, GetWaitingInputsResponse, RespondToInputData, RespondToInputResponse, DeleteWorkflowResponse } from './types';
+import { AiAppForgeSocket, WorkflowLog, NodeExecutionResult } from './socket';
 export declare class WorkflowsModule {
     private request;
-    constructor(request: <T>(endpoint: string, options?: any) => Promise<T>);
+    private socket?;
+    constructor(request: <T>(endpoint: string, options?: any) => Promise<T>, socket?: AiAppForgeSocket | undefined);
+    /**
+     * Subscribe to workflow logs.
+     */
+    onLog(callback: (log: WorkflowLog) => void): () => import("socket.io-client").Socket<import("@socket.io/component-emitter").DefaultEventsMap, import("@socket.io/component-emitter").DefaultEventsMap> | undefined;
+    /**
+     * Subscribe to node execution results.
+     */
+    onNodeExecutionResult(callback: (result: NodeExecutionResult) => void): () => import("socket.io-client").Socket<import("@socket.io/component-emitter").DefaultEventsMap, import("@socket.io/component-emitter").DefaultEventsMap> | undefined;
+    /**
+     * Join a workflow room to receive real-time updates.
+     */
+    join(workflowId: string): void;
     /**
      * List all workflows for a user.
      * @param userId The ID of the user.
