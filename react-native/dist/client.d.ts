@@ -1,10 +1,14 @@
-import { WorkflowsModule } from '@ai-appforge/core';
+import { WorkflowsModule, ActivityModule } from '@ai-appforge/core';
 export declare class AiAppForgeClient {
     private baseUrl;
     private apiKey;
+    private authToken?;
     workflows: WorkflowsModule;
-    constructor(options: {
-        apiKey: string;
+    activity: ActivityModule;
+    constructor(options?: {
+        apiKey?: string;
+        baseUrl?: string;
+        authToken?: string;
     });
     private request;
 }

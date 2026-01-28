@@ -1,4 +1,8 @@
-import { Headers as FetchHeaders } from 'node-fetch';
+// Minimal interface for headers compatibility across Node/RN/Browser
+export interface FetchHeaders {
+    get(name: string): string | null;
+    forEach(callback: (value: string, name: string, parent: any) => void): void;
+}
 
 export interface Workflow {
     id: string;
@@ -93,8 +97,14 @@ export interface WaitingInput {
     workflow_id: string;
     node_id: string;
     user_id: string;
-    status: 'waiting' | 'responded';
+    status: 'waiting' | 'responded' | 'completed';
+    prompt?: string;
+    config?: any;
     context: any;
+    response_data?: any;
+    workflows?: {
+        name: string;
+    };
     created_at: string;
     [key: string]: any;
 }
